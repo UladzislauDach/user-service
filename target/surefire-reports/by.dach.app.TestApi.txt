@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: by.dach.app.TestApi
--------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 7.477 s <<< FAILURE! - in by.dach.app.TestApi
-checkAuthorizationGet  Time elapsed: 0.013 s  <<< ERROR!
-java.lang.IllegalStateException: Cannot set error status - response is already committed
-	at by.dach.app.TestApi.checkAuthorizationGet(TestApi.java:40)
-
