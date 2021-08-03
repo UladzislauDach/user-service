@@ -9,6 +9,21 @@ spring:
       ddl-auto: validate
     show-sql: true
     generate-ddl: false
+  flyway:
+    locations:
+      - classpath:flyway
+    table: flyway_history
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: javamailsender2021@gmail.com
+    password: ctkkgoqmnxcjbcxn
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+
 security:
   firstKey: 123
   secondKey: qwe
+
+

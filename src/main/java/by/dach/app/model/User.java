@@ -23,7 +23,10 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    private String email;
     private LocalDateTime createdAt;
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
     @OneToOne (cascade = CascadeType.ALL)
     private Role role;
 }

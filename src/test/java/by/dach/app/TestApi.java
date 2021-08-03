@@ -47,7 +47,8 @@ public class TestApi {
   //  @Test
     public void checkAuthorizationPost() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        UserCreateDto user = new UserCreateDto("Jack123", "123", "Jack", "Smith");
+        UserCreateDto user = new UserCreateDto("Jack123", "123", "Jack", "Smith",
+                "test@mailinator.com");
         this.mockMvc.perform(post("/api/users")
                 .header("Authorization", 123)
                 .contentType(MediaType.APPLICATION_JSON)
