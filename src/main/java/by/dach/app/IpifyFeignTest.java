@@ -8,4 +8,5 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface IpifyFeignTest {
     @GetMapping
     Ip getIp();
+
 }

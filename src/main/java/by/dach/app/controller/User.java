@@ -13,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api")
-public class UserController {
+public class User {
     private final UserService userService;
 
-    UserController(UserService userService) {
+    User(UserService userService) {
         this.userService = userService;
     }
 
@@ -31,10 +31,10 @@ public class UserController {
     }
 
     @PostMapping("attach-role")
+    @ResponseStatus (HttpStatus.OK)
     private ResponseEntity<Object> attachRole(@RequestParam long userId, @RequestParam long roleId)
             throws UserNotFoundException, RoleNotFoundException {
         userService.attachRole(userId, roleId);
         return ResponseEntity.ok().build();
-        //todo сделать с помощью responseEntity.build() + annotation
     }
 }

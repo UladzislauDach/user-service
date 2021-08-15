@@ -23,7 +23,10 @@ spring:
       starttls.enable: true
 
 security:
-  firstKey: 123
-  secondKey: qwe
+  first_key: 123
+  second_key: qwe
 
+
+scheduled:
+  cron: 0 40 21 05 * *
 

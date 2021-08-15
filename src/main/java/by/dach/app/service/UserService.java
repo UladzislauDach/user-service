@@ -3,6 +3,7 @@ package by.dach.app.service;
 import by.dach.app.exception.RoleNotFoundException;
 import by.dach.app.exception.UserNotFoundException;
 import by.dach.app.mapper.UserMapper;
+import by.dach.app.model.User;
 import by.dach.app.model.UserStatus;
 import by.dach.app.model.dto.UserCreateDto;
 import by.dach.app.model.dto.UserDto;
@@ -20,12 +21,15 @@ public class UserService {
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
     private final MyMailSender myMailSender;
+    private final UserSecurityService userSecurityService;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository, MyMailSender myMailSender) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository,
+                       MyMailSender myMailSender, UserSecurityService userSecurityService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.roleRepository = roleRepository;
         this.myMailSender = myMailSender;
+        this.userSecurityService = userSecurityService;
     }
 
     public List<UserDto> findAll() {
@@ -34,7 +38,9 @@ public class UserService {
 
     @Transactional
     public UserCreateDto save(UserCreateDto userCreateDto) {
-        userRepository.save(userMapper.userCreateDtoToUser(userCreateDto));
+        User savedUser = userMapper.userCreateDtoToUser(userCreateDto);
+        savedUser.setPassword(userSecurityService.passwordEncoder().encode(userCreateDto.getPassword())); //todo
+        userRepository.save(savedUser);
         myMailSender.registrationEmailMessage(userCreateDto);
         return userCreateDto;
     }
@@ -51,10 +57,7 @@ public class UserService {
     }
 
     @Transactional
-    public void setUserStatus(long id, UserStatus userStatus){
+    public void setUserStatus(long id, UserStatus userStatus) {
         userRepository.setUserStatus(id, userStatus.toString());
     }
-
-
-
 }
