@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ExceptionHandlerController {
-    //переделать с наследованием
+
     @ExceptionHandler(value = {RoleNotFoundException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     ResponseEntity<FindEntityErrorDto> handlerRoleNotFound(RoleNotFoundException ex) {

@@ -1,17 +1,14 @@
 package by.dach.app.filters;
 
 import by.dach.app.service.UserSecurityService;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
 public class AuthorizationFilter extends OncePerRequestFilter {
 
     private final UserSecurityService userSecurityService;
@@ -20,13 +17,12 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         this.userSecurityService = userSecurityService;
     }
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String loginHeader = request.getHeader("login");
         String passwordHeader = request.getHeader("password");
-        if (loginHeader == null | passwordHeader == null) {
+        if (loginHeader == null || passwordHeader == null || !userSecurityService.existByLogin(loginHeader)) {
             response.sendError(403);
         } else if (userSecurityService.existUserByLoginAndPassword(loginHeader, passwordHeader)) {
             filterChain.doFilter(request, response);
@@ -36,18 +32,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
         String method = request.getMethod();
-        return "/api/users".equals(path) & method.equals("POST");
-    }
-
-    @Bean
-    FilterRegistrationBean<AuthorizationFilter> setPatternForFilter() {
-        FilterRegistrationBean<AuthorizationFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new AuthorizationFilter(userSecurityService));
-        registrationBean.addUrlPatterns("/api/*");
-        registrationBean.addUrlPatterns();
-        return registrationBean;
+        return "/api/users".equals(path) && method.equals("POST");
     }
 }

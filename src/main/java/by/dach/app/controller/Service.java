@@ -1,11 +1,10 @@
 package by.dach.app.controller;
 
-import by.dach.app.IpifyFeignTest;
-import by.dach.app.JplaceholderFeignTest;
+import by.dach.app.feign.Ipify;
+import by.dach.app.feign.Jplaceholder;
 import by.dach.app.model.UserStatus;
 import by.dach.app.model.feign.Ip;
 import by.dach.app.model.feign.Post;
-import by.dach.app.repository.UserRepository;
 import by.dach.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +15,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/service")
 public class Service {
-    private final JplaceholderFeignTest jplaceholderFeignTest;
-    private final IpifyFeignTest ipifyFeignTest;
+    private final Jplaceholder jplaceholder;
+    private final Ipify ipify;
     private final UserService userService;
 
     @Autowired
-    public Service(JplaceholderFeignTest jplaceholderFeignTest, IpifyFeignTest ipifyFeignTest,
+    public Service(Jplaceholder jplaceholder, Ipify ipify,
                    UserService userService) {
-        this.jplaceholderFeignTest = jplaceholderFeignTest;
-        this.ipifyFeignTest = ipifyFeignTest;
+        this.jplaceholder = jplaceholder;
+        this.ipify = ipify;
         this.userService = userService;
     }
 
@@ -36,17 +35,17 @@ public class Service {
 
     @GetMapping("posts")
     public List<Post> getPosts() {
-        return jplaceholderFeignTest.getPosts();
+        return jplaceholder.getPosts();
     }
 
     @GetMapping("posts/{id}")
     public Post getPostById(@PathVariable long id) {
-        return jplaceholderFeignTest.getPostById(id);
+        return jplaceholder.getPostById(id);
     }
 
     @GetMapping("ip")
     public Ip getIp() {
-        return ipifyFeignTest.getIp();
+        return ipify.getIp();
     }
 
     @GetMapping("activate-account/{id}")

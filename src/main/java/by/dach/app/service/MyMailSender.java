@@ -4,7 +4,8 @@ import by.dach.app.model.UserIdEmailFields;
 import by.dach.app.model.UserStatus;
 import by.dach.app.model.dto.UserCreateDto;
 import by.dach.app.repository.UserRepository;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,10 +15,10 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.logging.Level;
 
 @Component
-@Log
+@Slf4j
+@Primary
 public class MyMailSender {
     private final JavaMailSender emailSender;
     private final UserRepository userRepository;
@@ -27,10 +28,9 @@ public class MyMailSender {
         this.userRepository = userRepository;
     }
 
-    private final SimpleMailMessage message = new SimpleMailMessage();
-
-    void registrationEmailMessage(UserCreateDto userCreateDto) {
+    void sendRegistrationEmailMessage(UserCreateDto userCreateDto) {
         try {
+            SimpleMailMessage message = new SimpleMailMessage();
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
             message.setTo(userCreateDto.getEmail());
@@ -38,7 +38,7 @@ public class MyMailSender {
             message.setText("Hi " + userCreateDto.getFirstName() + "! You registered at " + now.format(format));
             emailSender.send(message);
         } catch (MailException e) {
-            log.log(Level.WARNING, "Error mail sending to " + userCreateDto.getEmail(), e);
+            log.error("Error mail sending to " + userCreateDto.getEmail(), e);
         }
     }
 
@@ -50,13 +50,14 @@ public class MyMailSender {
         }
         for (UserIdEmailFields users : userWithStatusPending) {
             try {
+                SimpleMailMessage message = new SimpleMailMessage();
                 message.setTo(users.getEmail());
                 message.setSubject("Activate account");
                 message.setText("Go to reference for activate account http://localhost:8080/service/activate-account/"
                         + users.getId());
                 emailSender.send(message);
             } catch (MailException e) {
-                log.log(Level.WARNING, "Error mail sending to " + users.getEmail(), e);
+                log.error("Error mail sending to " + users.getEmail(), e);
             }
         }
     }

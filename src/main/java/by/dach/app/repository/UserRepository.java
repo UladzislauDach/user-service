@@ -29,4 +29,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByLoginAndPassword(String userLogin, String userPassword);
 
+    boolean existsUserByLogin(String login);
+
+    @Query(value = "select password from users where login = :login", nativeQuery = true)
+    String getEncodedPasswordByLogin(String login);
+
 }

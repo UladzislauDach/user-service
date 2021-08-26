@@ -1,24 +1,27 @@
 package by.dach.app.service;
 
 import by.dach.app.repository.UserRepository;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class UserSecurityService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserSecurityService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+
+    public String getEncodedPasswordByLogin(String login) {
+        return userRepository.getEncodedPasswordByLogin(login);
     }
 
     public boolean existUserByLoginAndPassword(String login, String password) {
-        return userRepository.existsByLoginAndPassword(login, password);
+        String encodedPasswordFromDB = getEncodedPasswordByLogin(login);
+        return passwordEncoder.matches(password, encodedPasswordFromDB);
     }
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
+
+    public boolean existByLogin(String login) { //todo может его в UserService
+        return userRepository.existsUserByLogin(login);
     }
 }

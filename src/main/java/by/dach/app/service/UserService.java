@@ -9,28 +9,21 @@ import by.dach.app.model.dto.UserCreateDto;
 import by.dach.app.model.dto.UserDto;
 import by.dach.app.repository.RoleRepository;
 import by.dach.app.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
     private final MyMailSender myMailSender;
-    private final UserSecurityService userSecurityService;
-
-    public UserService(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository,
-                       MyMailSender myMailSender, UserSecurityService userSecurityService) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.roleRepository = roleRepository;
-        this.myMailSender = myMailSender;
-        this.userSecurityService = userSecurityService;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     public List<UserDto> findAll() {
         return userRepository.findAll().stream().map(userMapper::userToUserDto).collect(Collectors.toList());
@@ -39,9 +32,9 @@ public class UserService {
     @Transactional
     public UserCreateDto save(UserCreateDto userCreateDto) {
         User savedUser = userMapper.userCreateDtoToUser(userCreateDto);
-        savedUser.setPassword(userSecurityService.passwordEncoder().encode(userCreateDto.getPassword())); //todo
+        savedUser.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
         userRepository.save(savedUser);
-        myMailSender.registrationEmailMessage(userCreateDto);
+        myMailSender.sendRegistrationEmailMessage(userCreateDto);
         return userCreateDto;
     }
 

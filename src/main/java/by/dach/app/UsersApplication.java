@@ -2,10 +2,7 @@ package by.dach.app;
 
 import by.dach.app.model.Permission;
 import by.dach.app.model.Role;
-import by.dach.app.model.User;
-import by.dach.app.model.UserStatus;
 import by.dach.app.repository.RoleRepository;
-import by.dach.app.repository.UserRepository;
 import by.dach.app.service.MyMailSender;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,17 +16,17 @@ import java.util.List;
 @SpringBootApplication
 @EnableFeignClients
 @EnableScheduling
-public class RunApp implements CommandLineRunner {
+public class UsersApplication implements CommandLineRunner {
     final RoleRepository roleRepository;
     final MyMailSender myMailSender;
 
-    public RunApp(RoleRepository roleRepository, MyMailSender myMailSender) {
+    public UsersApplication(RoleRepository roleRepository, MyMailSender myMailSender) {
         this.roleRepository = roleRepository;
         this.myMailSender = myMailSender;
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(RunApp.class, args);
+        SpringApplication.run(UsersApplication.class, args);
     }
 
     @Override
