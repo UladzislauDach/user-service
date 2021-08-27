@@ -13,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api")
-public class User { //todo нормально ли создавать одноимённые классы в разных пакетах
+public class UserController {
     private final UserService userService;
 
-    User(UserService userService) {
+    UserController(UserService userService) {
         this.userService = userService;
     }
 

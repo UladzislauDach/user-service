@@ -28,7 +28,7 @@ security:
 
 
 scheduled:
-  cron: 0 40 21 05 * *
+  cron: 0 * * * * *
 telegram:
   bot:
     name: UserServiceApplicationBot

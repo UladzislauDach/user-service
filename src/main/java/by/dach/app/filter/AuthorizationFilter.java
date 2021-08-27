@@ -1,5 +1,6 @@
-package by.dach.app.filters;
+package by.dach.app.filter;
 
+import by.dach.app.exception.AuthorisationException;
 import by.dach.app.service.UserSecurityService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,12 +25,17 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         String passwordHeader = request.getHeader("password");
         if (loginHeader == null || passwordHeader == null) {
             response.sendError(403);
-        } else if (userSecurityService.checkCredentials(loginHeader, passwordHeader)){
+        }
+        try {
+            userSecurityService.checkCredentials(loginHeader, passwordHeader);
             filterChain.doFilter(request, response);
-        } else {
+        } catch (AuthorisationException e) {
             response.sendError(401);
         }
+
+
     }
+
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {

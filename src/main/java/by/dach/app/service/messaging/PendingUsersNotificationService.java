@@ -1,9 +1,11 @@
-package by.dach.app.service.messaging.schedule;
+package by.dach.app.service.messaging;
 
+import by.dach.app.exception.SendMessageException;
 import by.dach.app.model.UserIdEmailFields;
 import by.dach.app.model.UserStatus;
 import by.dach.app.repository.UserRepository;
-import by.dach.app.service.messaging.client.Gmail;
+import by.dach.app.service.messaging.client.EMailSender;
+import by.dach.app.service.messaging.client.MessagingApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,15 +17,15 @@ import java.util.List;
 public class PendingUsersNotificationService {
 
     private final UserRepository userRepository;
-    private final Gmail gmail;
+    private final MessagingApi messagingApi;
 
-    public PendingUsersNotificationService(UserRepository userRepository, Gmail gmail) {
+    public PendingUsersNotificationService(UserRepository userRepository, MessagingApi messagingApi) {
         this.userRepository = userRepository;
-        this.gmail = gmail;
+        this.messagingApi = messagingApi;
     }
 
     @Scheduled(cron = "${scheduled.cron}")
-    public void autoCheckPendingUsers() {
+    public void senMessagePendingUsers() {
         List<UserIdEmailFields> userWithStatusPending = userRepository.getUserByStatus(UserStatus.PENDING);
         if (userWithStatusPending.isEmpty()) {
             return;
@@ -31,9 +33,12 @@ public class PendingUsersNotificationService {
         for (UserIdEmailFields user : userWithStatusPending) {
             String message = "Go to reference for activate account http://localhost:8080/service/activate-account/"
                     + user.getId();
-            gmail.sendMessage("Activate account", message, user.getEmail());
+            try {
+                messagingApi.sendMessage("Activate account", message, user.getEmail());
+            } catch (SendMessageException e) {
+                log.error("Error send message to pending users", e);
+            }
 
         }
     }
 }
-

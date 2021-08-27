@@ -14,14 +14,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/service")
-public class Service {
+public class ServiceController {
     private final Jplaceholder jplaceholder;
     private final Ipify ipify;
     private final UserService userService;
 
     @Autowired
-    public Service(Jplaceholder jplaceholder, Ipify ipify,
-                   UserService userService) {
+    public ServiceController(Jplaceholder jplaceholder, Ipify ipify,
+                             UserService userService) {
         this.jplaceholder = jplaceholder;
         this.ipify = ipify;
         this.userService = userService;

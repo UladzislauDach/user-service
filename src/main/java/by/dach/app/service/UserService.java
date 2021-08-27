@@ -9,7 +9,7 @@ import by.dach.app.model.dto.UserCreateDto;
 import by.dach.app.model.dto.UserDto;
 import by.dach.app.repository.RoleRepository;
 import by.dach.app.repository.UserRepository;
-import by.dach.app.service.messaging.registration.RegistrationMessagingApi;
+import by.dach.app.service.messaging.RegistrationMessageSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
-    private final RegistrationMessagingApi registrationMessagingApi;
+    private final RegistrationMessageSender registrationMessageSender;
     private final PasswordEncoder passwordEncoder;
 
     public List<UserDto> findAll() {
@@ -35,7 +35,7 @@ public class UserService {
         User savedUser = userMapper.userCreateDtoToUser(userCreateDto);
         savedUser.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
         userRepository.save(savedUser);
-        registrationMessagingApi.sendRegistrationMessage(userCreateDto);
+        registrationMessageSender.sendRegistrationMessage(userCreateDto);
         return userCreateDto;
     }
 

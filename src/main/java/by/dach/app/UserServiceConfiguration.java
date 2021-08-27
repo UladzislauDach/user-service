@@ -1,6 +1,6 @@
 package by.dach.app;
 
-import by.dach.app.filters.AuthorizationFilter;
+import by.dach.app.filter.AuthorizationFilter;
 import by.dach.app.service.UserSecurityService;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
