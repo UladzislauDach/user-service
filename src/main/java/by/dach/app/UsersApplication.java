@@ -3,7 +3,7 @@ package by.dach.app;
 import by.dach.app.model.Permission;
 import by.dach.app.model.Role;
 import by.dach.app.repository.RoleRepository;
-import by.dach.app.service.messaging.registration.GMailSender;
+import by.dach.app.service.messaging.registration.GMailRegistrationMessageSender;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,11 +18,11 @@ import java.util.List;
 @EnableScheduling
 public class UsersApplication implements CommandLineRunner {
     final RoleRepository roleRepository;
-    final GMailSender GMailSender;
+    final GMailRegistrationMessageSender GMailRegistrationMessageSender;
 
-    public UsersApplication(RoleRepository roleRepository, GMailSender GMailSender) {
+    public UsersApplication(RoleRepository roleRepository, GMailRegistrationMessageSender GMailRegistrationMessageSender) {
         this.roleRepository = roleRepository;
-        this.GMailSender = GMailSender;
+        this.GMailRegistrationMessageSender = GMailRegistrationMessageSender;
     }
 
     public static void main(String[] args) {

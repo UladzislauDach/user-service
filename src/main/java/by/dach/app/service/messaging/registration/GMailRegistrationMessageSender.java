@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Primary
-public class GMailSender implements RegistrationMessagingApi {
+public class GMailRegistrationMessageSender implements RegistrationMessagingApi {
 
     private final Gmail gmail;
 
-    public GMailSender(Gmail gmail) {
+    public GMailRegistrationMessageSender(Gmail gmail) {
         this.gmail = gmail;
     }
 

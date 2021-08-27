@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TelegramSender implements RegistrationMessagingApi {
+public class TelegramRegistrationMessageSender implements RegistrationMessagingApi {
     private final Telegram telegram;
 
-    public TelegramSender(Telegram telegram) {
+    public TelegramRegistrationMessageSender(Telegram telegram) {
         this.telegram = telegram;
     }
 
