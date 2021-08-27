@@ -22,9 +22,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String loginHeader = request.getHeader("login");
         String passwordHeader = request.getHeader("password");
-        if (loginHeader == null || passwordHeader == null || !userSecurityService.existByLogin(loginHeader)) {
+        if (loginHeader == null || passwordHeader == null) {
             response.sendError(403);
-        } else if (userSecurityService.existUserByLoginAndPassword(loginHeader, passwordHeader)) {
+        } else if (userSecurityService.checkCredentials(loginHeader, passwordHeader)){
             filterChain.doFilter(request, response);
         } else {
             response.sendError(401);

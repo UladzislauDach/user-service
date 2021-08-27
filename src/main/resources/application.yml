@@ -29,4 +29,8 @@ security:
 
 scheduled:
   cron: 0 40 21 05 * *
-
+telegram:
+  bot:
+    name: UserServiceApplicationBot
+    token: 1908229986:AAGQ16j5VPbU5nkABtsDAH4ElDK1SlKb4xU
+  channelId: -1001522687995

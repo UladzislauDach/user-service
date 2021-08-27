@@ -1,9 +1,12 @@
 package by.dach.app.service;
 
+import by.dach.app.model.UserLoginPasswordFields;
 import by.dach.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
@@ -12,16 +15,17 @@ public class UserSecurityService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public String getEncodedPasswordByLogin(String login) {
-        return userRepository.getEncodedPasswordByLogin(login);
-    }
-
-    public boolean existUserByLoginAndPassword(String login, String password) {
-        String encodedPasswordFromDB = getEncodedPasswordByLogin(login);
-        return passwordEncoder.matches(password, encodedPasswordFromDB);
-    }
-
-    public boolean existByLogin(String login) { //todo может его в UserService
-        return userRepository.existsUserByLogin(login);
+    public boolean checkCredentials(String login, String passwordFromUI) {
+        final Optional<UserLoginPasswordFields> user = userRepository.getUserByLogin(login);
+        if (user.isEmpty()) {
+            //throw new AuthorisationException("Логин не существует");
+            return false;
+        }
+        final String passwordFromDb = user.get().getPassword();
+        if (!passwordEncoder.matches(passwordFromUI, passwordFromDb)) {
+            //throw new AuthorisationException("Не верный пароль");
+            return false;
+        }
+        return true;
     }
 }
