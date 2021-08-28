@@ -7,15 +7,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class UserServiceConfiguration {
+public class AuthorizationFilterConfiguration {
     private final UserSecurityService userSecurityService;
 
-    public UserServiceConfiguration(UserSecurityService userSecurityService) {
+    public AuthorizationFilterConfiguration(UserSecurityService userSecurityService) {
         this.userSecurityService = userSecurityService;
     }
 
     @Bean
-    public FilterRegistrationBean<AuthorizationFilter> authorizationFilterFilterRegistrationBean() {
+    public FilterRegistrationBean<AuthorizationFilter> authorizationFilterRegistrationBean() {
         FilterRegistrationBean<AuthorizationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new AuthorizationFilter(userSecurityService));
         registrationBean.addUrlPatterns("/api/*");

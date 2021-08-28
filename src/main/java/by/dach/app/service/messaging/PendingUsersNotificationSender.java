@@ -4,7 +4,6 @@ import by.dach.app.exception.SendMessageException;
 import by.dach.app.model.UserIdEmailFields;
 import by.dach.app.model.UserStatus;
 import by.dach.app.repository.UserRepository;
-import by.dach.app.service.messaging.client.EMailSender;
 import by.dach.app.service.messaging.client.MessagingApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,12 +13,12 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class PendingUsersNotificationService {
+public class PendingUsersNotificationSender {
 
     private final UserRepository userRepository;
     private final MessagingApi messagingApi;
 
-    public PendingUsersNotificationService(UserRepository userRepository, MessagingApi messagingApi) {
+    public PendingUsersNotificationSender(UserRepository userRepository, MessagingApi messagingApi) {
         this.userRepository = userRepository;
         this.messagingApi = messagingApi;
     }

@@ -1,6 +1,6 @@
 package by.dach.app.controller;
 
-import by.dach.app.exception.AuthorisationException;
+import by.dach.app.exception.AuthorizationException;
 import by.dach.app.exception.RoleNotFoundException;
 import by.dach.app.exception.UserNotFoundException;
 import by.dach.app.exception.error.AuthorisationError;
@@ -27,8 +27,8 @@ public class ExceptionHandlerAdvice {
         return new ResponseEntity<>(findEntityErrorDto, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = {AuthorisationException.class})
-    ResponseEntity<AuthorisationError> handlerUserNotFound(AuthorisationException ex) {
+    @ExceptionHandler(value = {AuthorizationException.class})
+    ResponseEntity<AuthorisationError> handlerUserNotFound(AuthorizationException ex) {
         AuthorisationError authorisationError = new AuthorisationError(ex.getMessage());
         return new ResponseEntity<>(authorisationError, HttpStatus.FORBIDDEN);
     }

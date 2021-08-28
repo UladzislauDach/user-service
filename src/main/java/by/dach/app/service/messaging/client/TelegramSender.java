@@ -2,7 +2,7 @@ package by.dach.app.service.messaging.client;
 
 import by.dach.app.exception.SendMessageException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
+@Profile("telegram")
 public class TelegramSender extends TelegramLongPollingBot implements MessagingApi {
     @Value("${telegram.bot.name}")
     private String botUsername;
